@@ -157,6 +157,7 @@ export const ActionReportButton: React.FC = () => {
     if (!title.trim() || !location.trim() || !description.trim()) return;
 
     setIsSubmitting(true);
+    setErrorMessage(null);
 
     try {
       await addReportWithImage({
@@ -178,6 +179,12 @@ export const ActionReportButton: React.FC = () => {
     } catch (error) {
       console.error("Error al publicar reporte:", error);
       setIsSubmitting(false);
+      setStep("FORM");
+      setErrorMessage(
+        error instanceof Error
+          ? `Error al guardar: ${error.message}`
+          : "No se pudo guardar el reporte. Intenta de nuevo."
+      );
     }
   };
 
@@ -517,6 +524,13 @@ export const ActionReportButton: React.FC = () => {
                     />
                   </div>
 
+                  {errorMessage && (
+                    <div className="p-3 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-400 text-xs font-semibold flex items-center gap-2">
+                      <AlertCircle className="size-4 shrink-0 text-rose-500" />
+                      <span>{errorMessage}</span>
+                    </div>
+                  )}
+
                   <div className="pt-2 flex items-center justify-end gap-2">
                     <Button
                       type="button"
@@ -531,7 +545,7 @@ export const ActionReportButton: React.FC = () => {
                       disabled={isSubmitting}
                       className="rounded-2xl bg-primary text-primary-foreground text-xs font-extrabold px-5 h-11 gap-1.5"
                     >
-                      {isSubmitting ? "Subiendo a Storage..." : "Publicar reporte"}
+                      {isSubmitting ? "Guardando reporte..." : "Publicar reporte"}
                     </Button>
                   </div>
                 </form>

@@ -206,34 +206,36 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode; user?: Aut
     }) => {
       let imageUrl: string | undefined = undefined;
 
-      // 1. Optimizar (1200px / AVIF/WebP) y Subir imagen a Supabase Storage
+      // 1. Convertir imagen optimizada a base64 para guardar en PostgreSQL
       if (data.imageFile) {
-        imageUrl = await uploadReportImageToStorage(data.imageFile);
+        try {
+          imageUrl = await uploadReportImageToStorage(data.imageFile);
+        } catch (uploadErr) {
+          console.error("Error al convertir imagen:", uploadErr);
+          // Continuar sin imagen — no bloquear el reporte
+        }
       }
 
       // 2. Persistir el reporte directamente en PostgreSQL
-      try {
-        const createdReport = await createReportAction({
-          title: data.title,
-          category: data.category,
-          location: data.location,
-          description: data.description,
-          imageUrl,
-          userId: user?.id,
-          userName: user?.name || "Estudiante GABO",
-        });
+      const createdReport = await createReportAction({
+        title: data.title,
+        category: data.category,
+        location: data.location,
+        description: data.description,
+        imageUrl,
+        userId: user?.id,
+        userName: user?.name || "Estudiante GABO",
+      });
 
-        // 3. Mostrar inmediatamente en la interfaz local (Realtime sincroniza con los demás)
-        setReports((prev) => {
-          if (prev.some((r) => r.id === createdReport.id)) return prev;
-          return [createdReport, ...prev];
-        });
-      } catch (error) {
-        console.error("Error guardando reporte en PostgreSQL:", error);
-      }
+      // 3. Mostrar inmediatamente en la interfaz local (Realtime sincroniza con los demás)
+      setReports((prev) => {
+        if (prev.some((r) => r.id === createdReport.id)) return prev;
+        return [createdReport, ...prev];
+      });
     },
     [user]
   );
+
 
   const updateReportStatus = useCallback(
     async (

@@ -94,61 +94,69 @@ export async function createReportAction(data: {
   userId?: string;
   userName?: string;
 }): Promise<ReportItem> {
-  const newReport = await prisma.report.create({
-    data: {
-      title: data.title,
-      category: data.category,
-      location: data.location,
-      description: data.description,
-      imageUrl: data.imageUrl,
-      status: "PENDING",
-      userId: data.userId || undefined,
-      history: {
-        create: {
-          status: "PENDING",
+  // Sanitizar userId — string vacío o no válido se convierte en undefined
+  const safeUserId = data.userId && data.userId.trim().length > 0 ? data.userId : undefined;
+
+  try {
+    const newReport = await prisma.report.create({
+      data: {
+        title: data.title,
+        category: data.category,
+        location: data.location,
+        description: data.description,
+        imageUrl: data.imageUrl || null,
+        status: "PENDING",
+        userId: safeUserId,
+        history: {
+          create: {
+            status: "PENDING",
+            actor: data.userName || "Estudiante GABO",
+            note: "Reporte registrado y persistido en PostgreSQL.",
+          },
+        },
+      },
+      include: {
+        user: {
+          select: {
+            name: true,
+            email: true,
+            image: true,
+          },
+        },
+        history: true,
+      },
+    });
+
+    return {
+      id: newReport.id,
+      title: newReport.title,
+      category: newReport.category,
+      location: newReport.location,
+      description: newReport.description,
+      status: "pending",
+      createdAt: "Hace un momento",
+      imageUrl: newReport.imageUrl || undefined,
+      upvotesCount: newReport.upvotesCount,
+      aiDuplicateCount: newReport.aiDuplicateCount,
+      isPriority: newReport.isPriority,
+      student: {
+        name: data.userName || "Estudiante GABO",
+        grade: "Estudiante",
+        email: "estudiante@iegabo.edu.co",
+      },
+      history: [
+        {
+          timestamp: "Hace un momento",
+          status: "pending",
           actor: data.userName || "Estudiante GABO",
           note: "Reporte registrado y persistido en PostgreSQL.",
         },
-      },
-    },
-    include: {
-      user: {
-        select: {
-          name: true,
-          email: true,
-          image: true,
-        },
-      },
-      history: true,
-    },
-  });
-
-  return {
-    id: newReport.id,
-    title: newReport.title,
-    category: newReport.category,
-    location: newReport.location,
-    description: newReport.description,
-    status: "pending",
-    createdAt: "Hace un momento",
-    imageUrl: newReport.imageUrl || undefined,
-    upvotesCount: newReport.upvotesCount,
-    aiDuplicateCount: newReport.aiDuplicateCount,
-    isPriority: newReport.isPriority,
-    student: {
-      name: data.userName || "Estudiante GABO",
-      grade: "Estudiante",
-      email: "estudiante@iegabo.edu.co",
-    },
-    history: [
-      {
-        timestamp: "Hace un momento",
-        status: "pending",
-        actor: data.userName || "Estudiante GABO",
-        note: "Reporte registrado y persistido en PostgreSQL.",
-      },
-    ],
-  };
+      ],
+    };
+  } catch (error) {
+    console.error("[createReportAction] Error al crear reporte en DB:", error);
+    throw new Error("No se pudo guardar el reporte en la base de datos.");
+  }
 }
 
 export async function updateReportStatusAction(
