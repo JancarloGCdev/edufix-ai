@@ -44,7 +44,7 @@ export function Navbar() {
             </a>
           ))}
           <a
-            href="#cta"
+            href="/login"
             className={cn(
               buttonVariants({ size: "lg" }),
               "ml-2 min-h-11 px-4"
@@ -83,7 +83,7 @@ export function Navbar() {
             </a>
           ))}
           <a
-            href="#cta"
+            href="/login"
             className={cn(
               buttonVariants({ size: "lg" }),
               "mt-2 min-h-11 w-full text-[15px]"

@@ -38,7 +38,7 @@ export function Hero() {
 
           <div className="mt-7 flex w-full flex-col gap-3 sm:flex-row sm:items-stretch">
             <a
-              href="#cta"
+              href="/login"
               className={cn(
                 buttonVariants({ size: "lg" }),
                 "min-h-11 w-full px-5 text-[15px] sm:w-auto"

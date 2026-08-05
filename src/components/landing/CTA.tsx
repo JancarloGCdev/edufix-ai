@@ -29,7 +29,7 @@ export function CTA() {
 
             <div className="mt-8 flex w-full flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center">
               <a
-                href="#contacto"
+                href="/login"
                 className={cn(
                   buttonVariants({ size: "lg" }),
                   "min-h-12 w-full shrink gap-2 bg-white px-5 text-[15px] font-semibold text-primary hover:bg-white/95 sm:w-auto"
