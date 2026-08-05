@@ -1,0 +1,48 @@
+---
+description: Mobile-first UI, GSAP-only motion, a11y touch targets for all EduFix AI screens
+alwaysApply: true
+---
+
+# EduFix AI — UI Screen Rules
+
+Before implementing any screen or UI change, verify it against this checklist.
+
+## Mobile First (mandatory)
+
+- Design first for **390px–430px** viewport width.
+- Then adapt to tablet and desktop. Never desktop-first.
+- Primary users: students on phones. UI should feel like a modern mobile app (Linear / Vercel / Material 3).
+
+```tsx
+{/* ✅ Base styles = mobile; enhance with sm/md/lg */}
+<div className="flex flex-col gap-4 px-4 py-6 md:mx-auto md:max-w-3xl md:px-8">
+
+{/* ❌ Desktop grid as default, then squeeze for mobile */}
+<div className="grid grid-cols-3 gap-8 max-md:grid-cols-1">
+```
+
+## Touch & Accessibility
+
+- Interactive controls: minimum **44×44px** hit area (`min-h-11 min-w-11` or equivalent padding).
+- High contrast (WCAG AA). Visible focus rings. Accessible labels / ARIA when needed.
+- Prefer clarity over decoration: generous whitespace, soft radii, discreet shadows, elegant transitions.
+
+## Components
+
+- Build reusable pieces; colocate under `src/components/` (or feature folders).
+- Prefer shadcn/ui primitives; do not duplicate one-off styled buttons/cards.
+
+## Motion — GSAP only
+
+- **Only** GSAP for animations. No Framer Motion, CSS infinite loops as primary UX motion, particles, animated backgrounds, or Three.js.
+- Motion must **inform** (entrance, counters, cards, section reveal, AI flow, confirmations) — never distract.
+- Prefer short durations (~200–300ms). No infinite decorative animations.
+- Mark animatable nodes with `data-gsap="..."` for future hooks when wiring GSAP.
+
+## Pre-ship checklist
+
+1. Readable and usable at ~400px width without horizontal scroll.
+2. Primary CTAs ≥ 44×44px.
+3. No non-GSAP animation libraries introduced.
+4. Layout starts mobile; larger breakpoints only enhance.
+5. High contrast text/icons; decorative noise minimized.

@@ -281,7 +281,9 @@ Duración máxima recomendada:
 - Partículas permanentes.
 - Objetos girando constantemente.
 - Animaciones excesivas.
-- Three.js en el MVP.
+- Animaciones infinitas decorativas.
+- Three.js.
+- Cualquier librería de animación distinta de GSAP.
 
 ---
 
@@ -387,14 +389,21 @@ Los errores deberán explicar:
 
 # Responsive Design
 
-La aplicación seguirá Mobile First.
+La aplicación seguirá **Mobile First**.
 
-Resoluciones objetivo:
+Resolución de diseño primaria (estudiantes en teléfono):
 
-- Mobile
+- **390px – 430px** (diseñar siempre primero aquí)
+
+Después adaptar, en este orden:
+
 - Tablet
 - Laptop
 - Desktop
+
+Nunca diseñar primero para escritorio.
+
+La experiencia debe sentirse como una aplicación móvil moderna (Linear, Vercel, Material 3).
 
 ---
 
@@ -408,6 +417,7 @@ La aplicación deberá cumplir como mínimo:
 - Labels accesibles.
 - Componentes compatibles con lectores de pantalla.
 - Uso correcto de ARIA cuando sea necesario.
+- **Área mínima de toque: 44×44 px** en todos los botones y controles interactivos.
 
 ---
 
