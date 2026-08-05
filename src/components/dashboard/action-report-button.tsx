@@ -70,8 +70,15 @@ export const ActionReportButton: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Limpiar el input para que pueda volver a seleccionarse la misma imagen
+    e.target.value = "";
+
     setErrorMessage(null);
     setProcessingImage(true);
+
+    // Abrir el dialog inmediatamente mostrando el estado de carga
+    setStep("CAMERA");
+    setIsOpen(true);
 
     try {
       // Validar y optimizar/convertir imagen a AVIF/WebP < 300KB
@@ -186,14 +193,26 @@ export const ActionReportButton: React.FC = () => {
 
   return (
     <>
+      {/*
+        Input oculto de archivo — SIN capture="environment" para soportar galería en iOS.
+        Se activa mediante <label htmlFor> para respetar el "user gesture" en todos los navegadores móviles.
+      */}
+      <input
+        id="report-camera-input"
+        ref={fileInputRef}
+        type="file"
+        accept="image/*,.heic,.heif"
+        onChange={handleImageCaptured}
+        className="sr-only absolute"
+        aria-hidden="true"
+        tabIndex={-1}
+      />
+
+      {/* Botón principal — usa <label> para activar el input directamente sin JS */}
       <div className="dash-fade">
-        <Button
-          onClick={() => {
-            setIsOpen(true);
-            setTimeout(() => fileInputRef.current?.click(), 150);
-          }}
-          size="lg"
-          className="w-full h-15 sm:h-16 rounded-2xl bg-primary text-primary-foreground font-black text-base sm:text-lg shadow-xl shadow-primary/25 hover:shadow-2xl hover:shadow-primary/35 hover:bg-primary/90 transition-all duration-300 flex items-center justify-center gap-3 active:scale-[0.98] focus-visible:ring-4 focus-visible:ring-primary/30"
+        <label
+          htmlFor="report-camera-input"
+          className="w-full h-15 sm:h-16 rounded-2xl bg-primary text-primary-foreground font-black text-base sm:text-lg shadow-xl shadow-primary/25 hover:shadow-2xl hover:shadow-primary/35 hover:bg-primary/90 transition-all duration-300 flex items-center justify-center gap-3 active:scale-[0.98] cursor-pointer select-none"
           aria-label="Reportar problema en la Institución Educativa GABO"
         >
           <Camera className="size-6 sm:size-7 animate-pulse" />
@@ -202,18 +221,8 @@ export const ActionReportButton: React.FC = () => {
             <Sparkles className="size-3.5 text-yellow-300" />
             Cámara IA
           </Badge>
-        </Button>
+        </label>
       </div>
-
-      {/* Input de Cámara / Archivo oculto con disparo nativo */}
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*,.heic,.heif"
-        capture="environment"
-        onChange={handleImageCaptured}
-        className="hidden"
-      />
 
       <Dialog open={isOpen} onOpenChange={(open) => {
         setIsOpen(open);
@@ -221,7 +230,7 @@ export const ActionReportButton: React.FC = () => {
       }}>
         <DialogContent className="sm:max-w-md rounded-3xl border-border bg-card p-0 overflow-hidden shadow-2xl">
 
-          {/* PASO 1: SELECCIÓN DE CÁMARA / GALERÍA */}
+          {/* PASO 1: CARGANDO / PROCESANDO IMAGEN */}
           {step === "CAMERA" && (
             <div className="p-6 flex flex-col items-center justify-center text-center gap-5 py-10">
               <div className="size-20 rounded-full bg-primary/10 text-primary flex items-center justify-center ring-8 ring-primary/5">
@@ -237,8 +246,8 @@ export const ActionReportButton: React.FC = () => {
                 </h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">
                   {processingImage
-                    ? "Optimizando imagen (<300 KB) y convirtiendo formato para móviles..."
-                    : "Toma la foto del problema directamente con la cámara de tu dispositivo o selecciona desde tu galería."}
+                    ? "Optimizando imagen (<300 KB) y convirtiendo formato..."
+                    : "Toma la foto del problema con tu cámara o selecciona desde tu galería."}
                 </p>
               </div>
 
@@ -250,14 +259,18 @@ export const ActionReportButton: React.FC = () => {
               )}
 
               <div className="flex flex-col w-full gap-2.5 pt-2">
-                <Button
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={processingImage}
-                  className="w-full h-12 rounded-2xl bg-primary text-primary-foreground font-bold text-sm gap-2"
+                {/* Label para "Abrir Cámara o Galería" — respeta el user gesture en móviles */}
+                <label
+                  htmlFor="report-camera-input"
+                  className={`w-full h-12 rounded-2xl font-bold text-sm gap-2 flex items-center justify-center cursor-pointer select-none transition-opacity ${
+                    processingImage
+                      ? "bg-primary/50 text-primary-foreground/70 pointer-events-none"
+                      : "bg-primary text-primary-foreground hover:bg-primary/90"
+                  }`}
                 >
                   <Camera className="size-5" />
                   {processingImage ? "Optimizando..." : "Abrir Cámara o Galería"}
-                </Button>
+                </label>
                 <Button
                   variant="ghost"
                   onClick={() => setIsOpen(false)}
@@ -415,14 +428,14 @@ export const ActionReportButton: React.FC = () => {
                         className="w-full h-full object-cover"
                       />
                     )}
-                    <button
-                      type="button"
-                      onClick={() => fileInputRef.current?.click()}
-                      className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white text-xs px-3 py-1.5 rounded-xl flex items-center gap-1.5 hover:bg-black/80 font-medium"
+                    {/* Label para "Cambiar foto" — respeta el user gesture en móviles */}
+                    <label
+                      htmlFor="report-camera-input"
+                      className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white text-xs px-3 py-1.5 rounded-xl flex items-center gap-1.5 hover:bg-black/80 font-medium cursor-pointer select-none"
                     >
                       <RotateCcw className="size-3.5" />
                       Cambiar foto
-                    </button>
+                    </label>
                   </div>
 
                   {/* Categoría Sugerida por la IA (Modificable opcionalmente) */}
