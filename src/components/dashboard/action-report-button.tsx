@@ -198,7 +198,7 @@ export const ActionReportButton: React.FC = () => {
         if (!open) resetFlow();
       }}>
         <DialogContent className="sm:max-w-md rounded-3xl border-border bg-card p-0 overflow-hidden shadow-2xl">
-          
+
           {/* PASO 1: SELECCIÓN DE CÁMARA / GALERÍA */}
           {step === "CAMERA" && (
             <div className="p-6 flex flex-col items-center justify-center text-center gap-5 py-10">

@@ -202,7 +202,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({ user }) => {
             <div className="space-y-2 text-xs">
               <div className="flex justify-between py-2 border-b border-border/60">
                 <span className="text-muted-foreground">Institución:</span>
-                <span className="font-semibold text-foreground">IE Gabriel García Márquez</span>
+                <span className="font-semibold text-foreground">Institución educativa GABO</span>
               </div>
               <div className="flex justify-between py-2 border-b border-border/60">
                 <span className="text-muted-foreground">Dominio autorizado:</span>

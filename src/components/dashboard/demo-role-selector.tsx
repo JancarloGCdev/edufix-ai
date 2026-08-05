@@ -4,12 +4,12 @@ import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/src/components/ui/avatar";
 import { Badge } from "@/src/components/ui/badge";
 import { Card } from "@/src/components/ui/card";
-import { GraduationCap, UserCheck, Wrench, Sparkles, ArrowRight, School } from "lucide-react";
+import { GraduationCap, UserCheck, Wrench, Shield, Sparkles, ArrowRight, School } from "lucide-react";
 import type { AuthUser } from "@/src/services/auth/session";
 
 interface DemoRoleSelectorProps {
   user: AuthUser;
-  onSelectRole: (role: "STUDENT" | "TEACHER" | "MAINTENANCE") => void;
+  onSelectRole: (role: "STUDENT" | "TEACHER" | "MAINTENANCE" | "ADMIN") => void;
 }
 
 export const DemoRoleSelector: React.FC<DemoRoleSelectorProps> = ({
@@ -140,6 +140,27 @@ export const DemoRoleSelector: React.FC<DemoRoleSelectorProps> = ({
                 </div>
               </div>
               <ArrowRight className="size-5 text-muted-foreground group-hover:text-purple-600 group-hover:translate-x-1 transition-all shrink-0" />
+            </button>
+
+            {/* Opción ADMINISTRADOR DEL SISTEMA */}
+            <button
+              onClick={() => onSelectRole("ADMIN")}
+              className="group relative p-4 rounded-2xl border-2 border-border hover:border-rose-500/60 bg-card hover:bg-rose-500/5 transition-all text-left flex items-center justify-between gap-4 shadow-xs active:scale-[0.98]"
+            >
+              <div className="flex items-center gap-3.5">
+                <div className="size-12 rounded-2xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                  <Shield className="size-6" />
+                </div>
+                <div className="space-y-0.5">
+                  <span className="font-extrabold text-sm sm:text-base text-foreground block group-hover:text-rose-600 transition-colors">
+                    Administrador del Sistema
+                  </span>
+                  <span className="text-xs text-muted-foreground block leading-tight">
+                    Gestión de usuarios, métricas globales del colegio, edición de roles y auditoría.
+                  </span>
+                </div>
+              </div>
+              <ArrowRight className="size-5 text-muted-foreground group-hover:text-rose-600 group-hover:translate-x-1 transition-all shrink-0" />
             </button>
           </div>
 

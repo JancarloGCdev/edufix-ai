@@ -65,7 +65,7 @@ export function Benefits() {
       className="relative border-b border-border/60 bg-muted/30 py-16 sm:py-24"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        
+
         {/* Encabezado */}
         <div className="mx-auto max-w-3xl text-center space-y-4">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
@@ -78,7 +78,7 @@ export function Benefits() {
             </span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-            Diseñado para mejorar la convivencia y calidad de la infraestructura en la Institución Educativa Gabriel García Márquez.
+            Diseñado para mejorar la convivencia y calidad de la infraestructura en la Institución educativa GABO.
           </p>
         </div>
 

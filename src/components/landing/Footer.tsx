@@ -8,9 +8,9 @@ export function Footer() {
   return (
     <footer id="contacto" data-gsap="footer" className="bg-card border-t border-border/60">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 space-y-10">
-        
+
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-          
+
           {/* Columna 1: Branding EduFix AI */}
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
@@ -28,7 +28,7 @@ export function Footer() {
             </div>
 
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-sm">
-              Solución web móvil moderna para la notificación, seguimiento y reparación en tiempo real de incidencias de infraestructura en la **Institución Educativa Gabriel García Márquez (IE GABO)**.
+              Solución web móvil moderna para la notificación, seguimiento y reparación en tiempo real de incidencias de infraestructura en la **Institución educativa GABO (IE GABO)**.
             </p>
 
             <div className="flex items-center gap-2 flex-wrap">

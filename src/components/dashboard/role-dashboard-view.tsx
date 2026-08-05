@@ -39,7 +39,7 @@ export const RoleDashboardView: React.FC<RoleDashboardViewProps> = ({ user }) =>
           {currentRoleConfig.title}
         </Badge>
         <span className="text-xs text-muted-foreground font-medium">
-          IE Gabriel García Márquez
+          Institución educativa GABO
         </span>
       </div>
 

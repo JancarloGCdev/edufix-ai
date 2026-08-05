@@ -12,6 +12,7 @@ export * from "./use-dashboard-animations";
 export * from "./student-dashboard-view";
 export * from "./teacher-dashboard-view";
 export * from "./maintenance-dashboard-view";
+export * from "./admin-dashboard-view";
 export * from "./teacher-report-detail-modal";
 export * from "./demo-role-selector";
 export * from "./dashboard-wrapper";

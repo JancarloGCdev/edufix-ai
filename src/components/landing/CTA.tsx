@@ -13,9 +13,9 @@ export function CTA() {
       className="relative border-b border-border/60 bg-muted/30 py-16 sm:py-24"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        
+
         <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-blue-700 via-indigo-700 to-slate-900 p-8 sm:p-14 lg:p-16 text-white shadow-2xl shadow-blue-600/25">
-          
+
           {/* Luces Difusas del Banner */}
           <div
             aria-hidden
@@ -27,11 +27,11 @@ export function CTA() {
           />
 
           <div className="relative mx-auto max-w-3xl text-center space-y-6">
-            
+
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 backdrop-blur-md">
               <Sparkles className="size-4 text-amber-300 animate-pulse" />
               <span className="text-xs font-black uppercase tracking-wider text-white">
-                IE Gabriel García Márquez
+                Institución educativa GABO
               </span>
             </div>
 
@@ -62,7 +62,7 @@ export function CTA() {
                   "h-13 w-full sm:w-auto px-8 rounded-2xl border-white/30 bg-white/5 backdrop-blur-md text-white hover:bg-white/10 font-bold text-sm transition-all flex items-center justify-center"
                 )}
               >
-                 Ver cómo funciona
+                Ver cómo funciona
               </a>
             </div>
 

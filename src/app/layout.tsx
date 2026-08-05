@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Jancarlo GC", url: "https://github.com/JancarloGCdev" }],
   creator: "EduFix AI Team",
-  publisher: "Institución Educativa Gabriel García Márquez",
+  publisher: "Institución educativa GABO",
   formatDetection: {
     email: false,
     address: false,
@@ -96,7 +96,7 @@ const jsonLdSchema = {
   url: "https://edufix-ai.vercel.app",
   author: {
     "@type": "Organization",
-    name: "Institución Educativa Gabriel García Márquez (IE GABO)",
+    name: "Institución educativa GABO (IE GABO)",
   },
   description:
     "Plataforma SaaS inteligente para la gestión de incidencias físicas e infraestructura escolar en tiempo real mediante Visión por Computadora e Inteligencia Artificial.",

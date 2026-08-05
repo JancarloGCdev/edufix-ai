@@ -66,10 +66,10 @@ export function Hero() {
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-12 lg:gap-8">
-          
+
           {/* LADO IZQUIERDO: Título potente + CTAs */}
           <div ref={leftCopyRef} className="lg:col-span-6 flex flex-col space-y-6 text-left">
-            
+
             {/* Insignia Impulsado por IA */}
             <div className="inline-flex items-center gap-2 self-start rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 backdrop-blur-md shadow-xs">
               <Sparkles className="size-4 text-blue-600 dark:text-blue-400 animate-pulse" />
@@ -121,7 +121,7 @@ export function Hero() {
             <div className="flex items-center gap-4 pt-4 border-t border-border/50 text-xs font-semibold text-muted-foreground flex-wrap">
               <span className="flex items-center gap-1.5 text-foreground font-bold">
                 <ShieldCheck className="size-4 text-emerald-500" />
-                IE Gabriel García Márquez (IE GABO)
+                Institución educativa GABO (IE GABO)
               </span>
               <span className="text-border">•</span>
               <span className="flex items-center gap-1 text-primary">
@@ -133,13 +133,13 @@ export function Hero() {
 
           {/* LADO DERECHO: Composición Visual Rica (Mockup Dashboard + Cards Flotantes Glassmorphism) */}
           <div ref={rightMockupRef} className="lg:col-span-6 relative flex justify-center items-center">
-            
+
             {/* Resplandor de fondo para el mockup */}
             <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 via-indigo-500/20 to-purple-500/20 rounded-3xl filter blur-2xl transform scale-95" />
 
             {/* Contenedor principal del Mockup */}
             <div className="relative w-full max-w-lg rounded-3xl border border-border/80 bg-card/90 backdrop-blur-2xl p-4 sm:p-5 shadow-2xl shadow-blue-500/10 space-y-4">
-              
+
               {/* Header del Mockup */}
               <div className="flex items-center justify-between pb-3 border-b border-border/60">
                 <div className="flex items-center gap-2">

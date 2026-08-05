@@ -60,7 +60,7 @@ export default async function Image() {
               color: "#cbd5e1",
             }}
           >
-            <span>IE Gabriel García Márquez (IE GABO)</span>
+            <span>Institución educativa GABO (IE GABO)</span>
           </div>
         </div>
 

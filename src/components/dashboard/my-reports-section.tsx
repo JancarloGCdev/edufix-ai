@@ -50,11 +50,10 @@ export const MyReportsSection: React.FC = () => {
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`px-3 py-1 rounded-lg transition-all font-bold whitespace-nowrap ${
-                  filter === f
+                className={`px-3 py-1 rounded-lg transition-all font-bold whitespace-nowrap ${filter === f
                     ? "bg-background text-foreground shadow-xs ring-1 ring-border"
                     : "text-muted-foreground hover:text-foreground"
-                }`}
+                  }`}
               >
                 {labels[f]}
               </button>
