@@ -99,7 +99,7 @@ Antes de comenzar el despliegue, asegúrate de crear una cuenta gratuita en los 
 
 1. En tu archivo `.env.local` temporal, coloca tus URLs de Supabase:
    ```env
-   DATABASE_URL="postgresql://postgres.[REF]:[PASS]@aws-0-[REGION].pooler.supabase.com:6543/postgres?pgbooster=true"
+   DATABASE_URL="postgresql://postgres.[REF]:[PASS]@aws-0-[REGION].pooler.supabase.com:6543/postgres?pgbouncer=true"
    DIRECT_URL="postgresql://postgres:[PASS]@db.[REF].supabase.co:5432/postgres"
    ```
 2. Ejecuta la sincronización de tablas:
@@ -142,20 +142,23 @@ Antes de comenzar el despliegue, asegúrate de crear una cuenta gratuita en los 
 
 ---
 
-## 📋 6. Tabla Completa de Variables de Entorno
+## 📋 6. Tabla Completa de Variables de Entorno (.env.local)
 
-A continuación se detallan todas las variables necesarias para el despliegue en Vercel:
+A continuación se detallan **todas las variables de entorno** que existen en tu archivo `.env.local` y que debes configurar exactamente con los mismos nombres en Vercel (**Project Settings ➔ Environment Variables**):
 
-| Variable | Alcance | Descripción | Dónde se obtiene |
+| Variable | Alcance | Descripción | Ejemplo / Dónde se obtiene |
 | :--- | :--- | :--- | :--- |
-| `DATABASE_URL` | Privada (Server) | Connection String del Pooler (Puerto 6543) | Supabase ➔ Project Settings ➔ Database (URI Pooler) |
-| `DIRECT_URL` | Privada (Server) | Conexión directa a PostgreSQL (Puerto 5432) | Supabase ➔ Project Settings ➔ Database (Direct URI) |
-| `AUTH_SECRET` | Privada (Server) | Clave secreta para cifrar cookies de sesión | Generado en terminal con `openssl rand -base64 32` |
-| `NEXTAUTH_URL` | Privada (Server) | URL pública base de la aplicación | `https://tu-dominio-edufix.vercel.app` |
-| `AUTH_GOOGLE_ID` | Privada (Server) | Client ID de Google OAuth 2.0 | Google Cloud Console ➔ Credenciales |
-| `AUTH_GOOGLE_SECRET` | Privada (Server) | Secret de Google OAuth 2.0 | Google Cloud Console ➔ Credenciales |
-| `NEXT_PUBLIC_SUPABASE_URL` | Pública (Client) | URL base de la API de Supabase | Supabase ➔ Settings ➔ API (Project URL) |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Pública (Client) | Clave pública de lectura/subida cliente | Supabase ➔ Settings ➔ API (Project API Keys `anon`) |
+| `DATABASE_URL` | Privada (Server) | Connection String de PostgreSQL Pooler (Puerto 6543) | Supabase ➔ Project Settings ➔ Database ➔ URI Pooler (`?pgbouncer=true`) |
+| `DIRECT_URL` | Privada (Server) | Conexión directa a PostgreSQL (Puerto 5432) para Prisma | Supabase ➔ Project Settings ➔ Database ➔ Direct URI |
+| `AUTH_SECRET` | Privada (Server) | Clave secreta de cifrado de sesiones Auth.js | Generada en `.env.local` con `openssl rand -base64 32` |
+| `AUTH_URL` | Privada (Server) | URL base de autenticación Auth.js v5 | En local: `http://localhost:3000` / En Vercel: `https://tu-dominio.vercel.app` |
+| `AUTH_GOOGLE_ID` | Privada (Server) | Client ID de Google OAuth 2.0 | Google Cloud Console ➔ APIs & Services ➔ Credenciales |
+| `AUTH_GOOGLE_SECRET` | Privada (Server) | Secret Key de Google OAuth 2.0 | Google Cloud Console ➔ APIs & Services ➔ Credenciales |
+| `ALLOWED_EMAIL_DOMAIN` | Privada (Server) | Dominio institucional permitido para inicio de sesión | `iegabo.edu.co` |
+| `NEXT_PUBLIC_SUPABASE_URL` | Pública (Client) | URL base del proyecto Supabase | Supabase ➔ Project Settings ➔ API ➔ Project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Pública (Client) | Clave pública cliente para Storage y Realtime | Supabase ➔ Project Settings ➔ API ➔ Project API Keys (`anon` `public`) |
+
+> ⚠️ **Nota para Vercel:** En producción, asegúrate de cambiar `AUTH_URL` por la URL de tu dominio asignado por Vercel (ejemplo: `https://edufix-ai.vercel.app`).
 
 ---
 
@@ -169,7 +172,7 @@ A continuación se detallan todas las variables necesarias para el despliegue en
    - **Root Directory:** `./`
    - **Build Command:** `npx prisma generate && next build`
 5. **Desplegar sección "Environment Variables":**
-   - Agrega una a una las 8 variables definidas en la tabla de la Sección 6.
+   - Agrega una a una las 9 variables definidas en la tabla de la Sección 6 tomando como referencia tu `.env.local`.
 6. Haz clic en **"Deploy"**.
 7. Espera unos instantes a que concluya la compilación de Turbopack. ¡Tu app estará publicada en `https://edufix-ai.vercel.app`!
 
@@ -180,9 +183,9 @@ A continuación se detallan todas las variables necesarias para el despliegue en
 Una vez completado el despliegue en Vercel, debes actualizar las URLs oficiales de producción en Google Cloud y Auth.js:
 
 1. **En Google Cloud Console:**
-   - Edita tu OAuth Client ID y añade la URL final asignada por Vercel a *Authorized Origins* y *Authorized Redirect URIs* (`https://tu-app.vercel.app/api/auth/callback/google`).
-2. **En Vercel:**
-   - Asegúrate de que `NEXTAUTH_URL` coincida exactamente con el dominio de producción (`https://tu-app.vercel.app`).
+   - Edita tu OAuth Client ID y añade la URL final asignada por Vercel a *Authorized Origins* (`https://edufix-ai.vercel.app`) y *Authorized Redirect URIs* (`https://edufix-ai.vercel.app/api/auth/callback/google`).
+2. **En Vercel (Environment Variables):**
+   - Asegúrate de que `AUTH_URL` coincida exactamente con el dominio de producción (`https://edufix-ai.vercel.app`).
 
 ---
 
