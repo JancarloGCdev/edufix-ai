@@ -23,6 +23,7 @@ import {
   Check,
   AlertCircle,
 } from "lucide-react";
+import { GRADE_LOCATIONS, AREA_LOCATIONS } from "@/src/lib/locations";
 import { useDashboard } from "./dashboard-context";
 import gsap from "gsap";
 
@@ -49,12 +50,12 @@ export const ActionReportButton: React.FC = () => {
   });
 
   // Datos sugeridos por IA
-  const [suggestedLocation] = useState("Salón 204 (Bloque B)");
+  const [suggestedLocation] = useState("6-1");
   const [suggestedCategory, setSuggestedCategory] = useState("Infraestructura");
 
   // Formulario manual reducido
   const [title, setTitle] = useState("");
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState("6-1");
   const [description, setDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -427,14 +428,29 @@ export const ActionReportButton: React.FC = () => {
                     <label htmlFor="form-location" className="text-xs font-bold text-foreground">
                       Salón o Ubicación exacta *
                     </label>
-                    <Input
+                    <select
                       id="form-location"
-                      placeholder="Ej: Salón 204 (Bloque B)"
                       value={location}
                       onChange={(e) => setLocation(e.target.value)}
                       required
-                      className="rounded-xl text-xs sm:text-sm"
-                    />
+                      className="w-full h-10 rounded-xl border border-input bg-background px-3 text-xs sm:text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                    >
+                      <option value="" disabled>Selecciona salón o área...</option>
+                      <optgroup label="Grados">
+                        {GRADE_LOCATIONS.map((grade) => (
+                          <option key={grade} value={grade}>
+                            {grade}
+                          </option>
+                        ))}
+                      </optgroup>
+                      <optgroup label="Áreas e Instalaciones">
+                        {AREA_LOCATIONS.map((area) => (
+                          <option key={area} value={area}>
+                            {area}
+                          </option>
+                        ))}
+                      </optgroup>
+                    </select>
                   </div>
 
                   <div className="space-y-1">

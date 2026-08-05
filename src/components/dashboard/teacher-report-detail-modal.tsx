@@ -7,6 +7,7 @@ import {
   RejectionReasonType,
   REJECTION_REASON_LABELS,
   formatReportId,
+  MAINTENANCE_STAFF_LIST,
 } from "./mock-data";
 import {
   Dialog,
@@ -37,6 +38,7 @@ import {
   Upload,
   RotateCcw,
   Check,
+  Wrench,
 } from "lucide-react";
 import { useDashboard } from "./dashboard-context";
 import { STATUS_CARD_STYLES } from "./report-card";
@@ -57,6 +59,8 @@ export const TeacherReportDetailModal: React.FC<TeacherReportDetailModalProps> =
   // Estados de modales secundarios
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
   const [isResolveModalOpen, setIsResolveModalOpen] = useState(false);
+  const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
+  const [selectedStaff, setSelectedStaff] = useState(MAINTENANCE_STAFF_LIST[0].name);
 
   // Formulario de Rechazo
   const [rejectionReason, setRejectionReason] =
@@ -118,6 +122,18 @@ export const TeacherReportDetailModal: React.FC<TeacherReportDetailModalProps> =
     if (resolutionPreviewUrl) URL.revokeObjectURL(resolutionPreviewUrl);
     setResolutionPreviewUrl(null);
     setResolutionFile(null);
+  };
+
+  // Confirmar Asignación a Mantenimiento
+  const handleConfirmAssignment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    await updateReportStatus(report.id, "in_repair", {
+      assignedTo: selectedStaff,
+      actorName: teacherName,
+    });
+    setIsSubmitting(false);
+    setIsAssignModalOpen(false);
   };
 
   const handleResolutionImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -240,6 +256,25 @@ export const TeacherReportDetailModal: React.FC<TeacherReportDetailModalProps> =
                   >
                     🔴 Rechazado
                   </button>
+                </div>
+
+                {/* Botón Asignar a Mantenimiento */}
+                <div className="pt-2 border-t border-border/60 flex items-center justify-between gap-2 flex-wrap">
+                  <Button
+                    type="button"
+                    onClick={() => setIsAssignModalOpen(true)}
+                    variant="outline"
+                    className="w-full sm:w-auto h-9 rounded-xl text-xs font-bold gap-1.5 border-purple-500/40 text-purple-700 dark:text-purple-300 hover:bg-purple-500/10"
+                  >
+                    <Wrench className="size-3.5 text-purple-500" />
+                    <span>Asignar a Mantenimiento</span>
+                  </Button>
+
+                  {report.assignedTo ? (
+                    <span className="text-[11px] font-bold text-purple-700 dark:text-purple-300 bg-purple-500/15 px-3 py-1 rounded-xl border border-purple-500/30">
+                      🛠️ Asignado a: {report.assignedTo}
+                    </span>
+                  ) : null}
                 </div>
               </div>
 
@@ -512,6 +547,80 @@ export const TeacherReportDetailModal: React.FC<TeacherReportDetailModalProps> =
                 className="rounded-xl text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-bold"
               >
                 Guardar Resolución
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* MODAL DE ASIGNACIÓN A MANTENIMIENTO */}
+      <Dialog open={isAssignModalOpen} onOpenChange={setIsAssignModalOpen}>
+        <DialogContent className="sm:max-w-md rounded-3xl border-border bg-card p-6 shadow-2xl">
+          <DialogHeader>
+            <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-bold text-xs">
+              <Wrench className="size-4" />
+              <span>Asignar Personal de Mantenimiento</span>
+            </div>
+            <DialogTitle className="text-lg font-bold text-foreground">
+              Seleccionar Técnico Responsable
+            </DialogTitle>
+            <DialogDescription className="text-xs text-muted-foreground">
+              El reporte cambiará a estado &quot;En reparación&quot; y se notificará al técnico asignado.
+            </DialogDescription>
+          </DialogHeader>
+
+          <form onSubmit={handleConfirmAssignment} className="space-y-4 py-2">
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-foreground">Técnico o Cuadrilla Disponible *</label>
+              <div className="space-y-2">
+                {MAINTENANCE_STAFF_LIST.map((staff) => (
+                  <label
+                    key={staff.id}
+                    onClick={() => setSelectedStaff(staff.name)}
+                    className={`flex items-center justify-between p-3 rounded-2xl border cursor-pointer transition-all ${
+                      selectedStaff === staff.name
+                        ? "bg-purple-500/10 border-purple-500/50 ring-1 ring-purple-500"
+                        : "bg-muted/40 border-border/70 hover:bg-muted"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="size-8 rounded-full bg-purple-500/20 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-xs">
+                        <Wrench className="size-4" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold text-foreground">{staff.name}</p>
+                        <p className="text-[10px] text-muted-foreground">{staff.specialty}</p>
+                      </div>
+                    </div>
+
+                    <input
+                      type="radio"
+                      name="maintenanceStaff"
+                      value={staff.name}
+                      checked={selectedStaff === staff.name}
+                      onChange={() => setSelectedStaff(staff.name)}
+                      className="accent-purple-600"
+                    />
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <DialogFooter className="gap-2 pt-2">
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => setIsAssignModalOpen(false)}
+                className="rounded-xl text-xs"
+              >
+                Cancelar
+              </Button>
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="rounded-xl text-xs bg-purple-600 hover:bg-purple-700 text-white font-bold"
+              >
+                Confirmar Asignación
               </Button>
             </DialogFooter>
           </form>

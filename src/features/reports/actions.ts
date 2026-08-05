@@ -160,6 +160,7 @@ export async function updateReportStatusAction(
     resolutionNotes?: string;
     resolutionImageUrl?: string;
     actorName?: string;
+    assignedTo?: string;
   }
 ) {
   const statusMap: Record<StatusType, ReportStatus> = {
@@ -177,6 +178,7 @@ export async function updateReportStatusAction(
       where: { id },
       data: {
         status: dbStatus,
+        assignedTo: extraData?.assignedTo,
         rejectionReason: extraData?.rejectionReason,
         rejectionNotes: extraData?.rejectionNotes,
         resolutionNotes: extraData?.resolutionNotes,
@@ -190,6 +192,8 @@ export async function updateReportStatusAction(
                 ? `Rechazado: ${extraData?.rejectionNotes || "Moderación"}`
                 : newStatus === "resolved"
                 ? `Resuelto: ${extraData?.resolutionNotes || "Solución completada"}`
+                : extraData?.assignedTo
+                ? `Asignado a ${extraData.assignedTo}`
                 : `Estado actualizado a ${newStatus}`,
             resolutionImageUrl: extraData?.resolutionImageUrl,
           },

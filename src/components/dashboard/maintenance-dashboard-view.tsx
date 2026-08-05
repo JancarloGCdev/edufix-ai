@@ -43,10 +43,14 @@ const MaintenanceDashboardContent: React.FC<MaintenanceDashboardViewProps> = ({ 
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Reportes asignados a la cuadrilla de mantenimiento técnico
-  const assignedReports = reports.filter(
-    (r) => r.status === "in_review" || r.status === "in_repair" || r.assignedTo
-  );
+  // Reportes asignados a la cuadrilla de mantenimiento técnico (Asignados, En proceso, Terminados)
+  const assignedReports = reports.filter((r) => {
+    const isAssigned = !!r.assignedTo;
+    const isInRepair = r.status === "in_repair";
+    const isResolved = r.status === "resolved";
+
+    return isAssigned || isInRepair || isResolved;
+  });
 
   const handleOpenMaintenanceModal = (report: ReportItem, status: "in_repair" | "resolved") => {
     setSelectedReport(report);
@@ -70,7 +74,7 @@ const MaintenanceDashboardContent: React.FC<MaintenanceDashboardViewProps> = ({ 
     await updateReportStatus(selectedReport.id, targetStatus, {
       resolutionNotes,
       resolutionFile: resolutionFile || undefined,
-      actorName: user.name || "Técnico Mantenimiento GABO",
+      actorName: user.name || selectedReport.assignedTo || "Técnico Mantenimiento GABO",
     });
 
     setIsSubmitting(false);
@@ -113,10 +117,11 @@ const MaintenanceDashboardContent: React.FC<MaintenanceDashboardViewProps> = ({ 
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {assignedReports.map((report) => (
+          {assignedReports.map((report, idx) => (
             <div key={report.id} className="flex flex-col space-y-2">
               <ReportCard
                 report={report}
+                index={idx}
                 isUpvoted={upvotedIds.has(report.id)}
                 onUpvote={upvoteReport}
                 onOpenDetails={() => handleOpenMaintenanceModal(report, "in_repair")}

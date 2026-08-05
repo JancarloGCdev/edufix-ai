@@ -41,6 +41,7 @@ interface DashboardContextType {
       resolutionNotes?: string;
       resolutionFile?: File;
       actorName?: string;
+      assignedTo?: string;
     }
   ) => Promise<void>;
   upvoteReport: (id: string) => void;
@@ -244,6 +245,7 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode; user?: Aut
         resolutionNotes?: string;
         resolutionFile?: File;
         actorName?: string;
+        assignedTo?: string;
       }
     ) => {
       let resolutionImageUrl: string | undefined = undefined;
@@ -257,22 +259,27 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode; user?: Aut
         prevReports.map((r) => {
           if (r.id !== id) return r;
 
+          const noteText =
+            newStatus === "rejected"
+              ? `Rechazado: ${extraData?.rejectionNotes || "Moderación institucional"}`
+              : newStatus === "resolved"
+              ? `Resuelto: ${extraData?.resolutionNotes || "Solución completada por " + (r.assignedTo || "Mantenimiento")}`
+              : extraData?.assignedTo
+              ? `Asignado a ${extraData.assignedTo}`
+              : `Estado cambiado a ${newStatus}`;
+
           const historyEntry = {
             timestamp: "Ahora mismo",
             status: newStatus,
             actor: extraData?.actorName || user?.name || "Profesor / Coordinador GABO",
-            note:
-              newStatus === "rejected"
-                ? `Rechazado: ${extraData?.rejectionNotes || "Moderación institucional"}`
-                : newStatus === "resolved"
-                ? `Resuelto: ${extraData?.resolutionNotes || "Solución completada"}`
-                : `Estado cambiado a ${newStatus}`,
+            note: noteText,
             resolutionImageUrl,
           };
 
           return {
             ...r,
             status: newStatus,
+            assignedTo: extraData?.assignedTo || r.assignedTo,
             rejectionReason: newStatus === "rejected" ? extraData?.rejectionReason : r.rejectionReason,
             rejectionNotes: newStatus === "rejected" ? extraData?.rejectionNotes : r.rejectionNotes,
             resolutionNotes: newStatus === "resolved" ? extraData?.resolutionNotes : r.resolutionNotes,
@@ -290,6 +297,7 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode; user?: Aut
           resolutionNotes: extraData?.resolutionNotes,
           resolutionImageUrl,
           actorName: extraData?.actorName || user?.name || undefined,
+          assignedTo: extraData?.assignedTo,
         });
       } catch (err) {
         console.error("Error actualizando estado en PostgreSQL:", err);

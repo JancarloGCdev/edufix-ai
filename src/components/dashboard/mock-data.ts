@@ -77,6 +77,19 @@ export const REJECTION_REASON_LABELS: Record<RejectionReasonType, string> = {
   other: "Rechazado por moderación institucional",
 };
 
+export interface MaintenanceStaff {
+  id: string;
+  name: string;
+  specialty: string;
+}
+
+export const MAINTENANCE_STAFF_LIST: MaintenanceStaff[] = [
+  { id: "m1", name: "Carlos Ruíz", specialty: "Electricidad y Redes" },
+  { id: "m2", name: "Mario Gómez", specialty: "Infraestructura y Pintura" },
+  { id: "m3", name: "Esteban López", specialty: "Tecnología y Proyectores" },
+  { id: "m4", name: "Cuadrilla Mantenimiento General", specialty: "Mantenimiento General" },
+];
+
 export const INITIAL_REPORTS: ReportItem[] = [
   {
     id: "REP-104",
