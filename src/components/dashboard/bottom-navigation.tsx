@@ -65,22 +65,34 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ({
         className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-background/90 backdrop-blur-xl border-t border-border/80 px-3 py-2 shadow-2xl"
       >
         <div className="mx-auto flex max-w-md items-center justify-around">
-          
+
           {/* 1. 🏠 Inicio -> Dashboard */}
           <Link
             href="/dashboard"
             onClick={() => setActiveTab("home")}
-            className={`flex flex-col items-center justify-center gap-1 py-1 px-2 rounded-xl transition-colors ${
-              activeTab === "home" && pathname === "/dashboard"
-                ? "text-primary font-bold"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
+            className={`flex flex-col items-center justify-center gap-1 py-1 px-2 rounded-xl transition-colors ${activeTab === "home" && pathname === "/dashboard"
+              ? "text-primary font-bold"
+              : "text-muted-foreground hover:text-foreground"
+              }`}
           >
             <Home className="size-5" />
             <span className="text-[10px] tracking-tight">Inicio</span>
           </Link>
 
-          {/* 2. ➕ Reportar -> Abrir directamente modal */}
+          {/* 2. 🔥 Populares -> Scroll a la sección */}
+          <button
+            type="button"
+            onClick={scrollToPopular}
+            className={`flex flex-col items-center justify-center gap-1 py-1 px-2 rounded-xl transition-colors ${activeTab === "popular"
+              ? "text-orange-500 font-bold"
+              : "text-muted-foreground hover:text-foreground"
+              }`}
+          >
+            <Flame className="size-5" />
+            <span className="text-[10px] tracking-tight">Populares</span>
+          </button>
+
+          {/* 3. ➕ Reportar -> Abrir directamente modal */}
           <button
             type="button"
             onClick={handleReportClick}
@@ -94,21 +106,6 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ({
               Reportar
             </span>
           </button>
-
-          {/* 3. 🔥 Populares -> Scroll a la sección */}
-          <button
-            type="button"
-            onClick={scrollToPopular}
-            className={`flex flex-col items-center justify-center gap-1 py-1 px-2 rounded-xl transition-colors ${
-              activeTab === "popular"
-                ? "text-orange-500 font-bold"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            <Flame className="size-5" />
-            <span className="text-[10px] tracking-tight">Populares</span>
-          </button>
-
           {/* 4. 🔔 Notificaciones -> Panel modal */}
           <button
             type="button"
@@ -116,11 +113,10 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ({
               setActiveTab("notifications");
               setIsNotificationsOpen(true);
             }}
-            className={`flex flex-col items-center justify-center gap-1 py-1 px-2 rounded-xl transition-colors relative ${
-              activeTab === "notifications"
-                ? "text-primary font-bold"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
+            className={`flex flex-col items-center justify-center gap-1 py-1 px-2 rounded-xl transition-colors relative ${activeTab === "notifications"
+              ? "text-primary font-bold"
+              : "text-muted-foreground hover:text-foreground"
+              }`}
           >
             <div className="relative">
               <Bell className="size-5" />
@@ -133,11 +129,10 @@ export const BottomNavigation: React.FC<BottomNavigationProps> = ({
           <button
             type="button"
             onClick={handleProfileClick}
-            className={`flex flex-col items-center justify-center gap-1 py-1 px-2 rounded-xl transition-colors ${
-              activeTab === "profile"
-                ? "text-primary font-bold"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
+            className={`flex flex-col items-center justify-center gap-1 py-1 px-2 rounded-xl transition-colors ${activeTab === "profile"
+              ? "text-primary font-bold"
+              : "text-muted-foreground hover:text-foreground"
+              }`}
           >
             <User className="size-5" />
             <span className="text-[10px] tracking-tight">Perfil</span>
