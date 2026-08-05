@@ -27,6 +27,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   authenticators Authenticator[]
+  reports        Report[]
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
 }
@@ -80,4 +81,62 @@ model Authenticator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, credentialID])
+}
+
+enum ReportStatus {
+  PENDING
+  IN_REVIEW
+  IN_REPAIR
+  RESOLVED
+  REJECTED
+}
+
+model Report {
+  id                  String         @id @default(cuid())
+  title               String
+  category            String
+  location            String
+  description         String         @db.Text
+  status              ReportStatus   @default(PENDING)
+  imageUrl            String?        @db.Text
+  upvotesCount        Int            @default(0)
+  aiDuplicateCount    Int            @default(0)
+  isPriority          Boolean        @default(false)
+  assignedTo          String?
+  rejectionReason     String?
+  rejectionNotes      String?        @db.Text
+  resolutionNotes     String?        @db.Text
+  resolutionImageUrl  String?        @db.Text
+  
+  userId              String?
+  user                User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  upvotes             ReportUpvote[]
+  history             ReportHistory[]
+
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+}
+
+model ReportUpvote {
+  id        String   @id @default(cuid())
+  reportId  String
+  userId    String?
+  createdAt DateTime @default(now())
+
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  @@unique([reportId, userId])
+}
+
+model ReportHistory {
+  id                  String       @id @default(cuid())
+  reportId            String
+  status              ReportStatus
+  actor               String
+  note                String?      @db.Text
+  resolutionImageUrl  String?      @db.Text
+  createdAt           DateTime     @default(now())
+
+  report              Report       @relation(fields: [reportId], references: [id], onDelete: Cascade)
 }

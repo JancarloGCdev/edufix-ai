@@ -1,10 +1,7 @@
 import React from "react";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/src/services/auth/session";
-import {
-  StudentDashboardView,
-  RoleDashboardView,
-} from "@/src/components/dashboard";
+import { DashboardWrapper } from "@/src/components/dashboard";
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -13,15 +10,6 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  // Arquitectura limpia: Renderizado dinámico según el rol del usuario
-  switch (user.role) {
-    case "STUDENT":
-      return <StudentDashboardView user={user} />;
-    case "TEACHER":
-    case "ADMIN":
-    case "MAINTENANCE":
-      return <RoleDashboardView user={user} />;
-    default:
-      return <StudentDashboardView user={user} />;
-  }
+  // Renderizar DashboardWrapper para permitir la selección interactiva de rol en Modo Demo
+  return <DashboardWrapper user={user} />;
 }

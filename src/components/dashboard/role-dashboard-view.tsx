@@ -4,7 +4,7 @@ import React from "react";
 import { HeaderSection } from "./header-section";
 import { BottomNavigation } from "./bottom-navigation";
 import { Badge } from "@/src/components/ui/badge";
-import { Shield, Wrench, GraduationCap, Users } from "lucide-react";
+import { Shield, Wrench, Users } from "lucide-react";
 import type { AuthUser } from "@/src/services/auth/session";
 
 interface RoleDashboardViewProps {
@@ -13,12 +13,6 @@ interface RoleDashboardViewProps {
 
 export const RoleDashboardView: React.FC<RoleDashboardViewProps> = ({ user }) => {
   const roleConfig = {
-    TEACHER: {
-      title: "Portal Docente",
-      icon: GraduationCap,
-      description: "Bienvenido al área docente. Aquí podrás priorizar incidencias de las aulas y laboratorios.",
-      color: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30",
-    },
     ADMIN: {
       title: "Panel Administrativo",
       icon: Users,
@@ -34,7 +28,7 @@ export const RoleDashboardView: React.FC<RoleDashboardViewProps> = ({ user }) =>
   };
 
   const currentRoleConfig =
-    roleConfig[user.role as keyof typeof roleConfig] || roleConfig.TEACHER;
+    roleConfig[user.role as keyof typeof roleConfig] || roleConfig.ADMIN;
   const RoleIcon = currentRoleConfig.icon;
 
   return (

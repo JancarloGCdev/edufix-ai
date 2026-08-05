@@ -5,7 +5,7 @@ import {
   HeaderSection,
   SummarySection,
   ActionReportButton,
-  MyReportsSection,
+  PublicSocialFeed,
   PopularReportsSection,
   BottomNavigation,
   DashboardProvider,
@@ -31,10 +31,10 @@ const StudentDashboardContent: React.FC<StudentDashboardViewProps> = ({ user }) 
       <div className="dash-fade flex items-center justify-between px-1">
         <Badge variant="outline" className="gap-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 text-[10px] font-bold">
           <ShieldCheck className="size-3" />
-          IE GABO — Portal de Incidencias
+          IE GABO — Red Social de Incidencias
         </Badge>
         <span className="text-xs text-muted-foreground font-semibold">
-          EduFix AI v1.0
+          EduFix Social v1.0
         </span>
       </div>
 
@@ -44,15 +44,15 @@ const StudentDashboardContent: React.FC<StudentDashboardViewProps> = ({ user }) 
       {/* 2. BOTÓN PRINCIPAL: Disparo directo a cámara y flujo de IA */}
       <ActionReportButton />
 
-      {/* 3. RESUMEN: Indicadores dinámicos animados (Pendientes, En revisión, Resueltos, Rechazados) */}
+      {/* 3. RESUMEN: Indicadores dinámicos animados (Pendientes, En revisión, En reparación, Resueltos, Rechazados) */}
       <SummarySection />
 
-      {/* 4. SECCIÓN PROBLEMAS POPULARES: Carrusel Horizontal Móvil con Cards Clickeables */}
+      {/* 4. SECCIÓN PROBLEMAS POPULARES: Carrusel Horizontal Móvil */}
       <PopularReportsSection />
 
-      {/* 5. SECCIÓN MIS REPORTES: Grid de Cards con Bordes Adaptativos y Sombras Suaves por Estado */}
+      {/* 5. FEED SOCIAL PÚBLICO: Todos los reportes de la comunidad con búsqueda, categorías e interacción en tiempo real */}
       <div className="pt-2">
-        <MyReportsSection />
+        <PublicSocialFeed />
       </div>
 
       {/* BARRA MÓVIL INFERIOR */}
@@ -63,7 +63,7 @@ const StudentDashboardContent: React.FC<StudentDashboardViewProps> = ({ user }) 
 
 export const StudentDashboardView: React.FC<StudentDashboardViewProps> = ({ user }) => {
   return (
-    <DashboardProvider>
+    <DashboardProvider user={user}>
       <StudentDashboardContent user={user} />
     </DashboardProvider>
   );

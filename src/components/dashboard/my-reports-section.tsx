@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ReportItem, StatusType, REJECTION_REASON_LABELS } from "./mock-data";
+import { ReportItem, StatusType, REJECTION_REASON_LABELS, formatReportId } from "./mock-data";
 import { ReportCard } from "./report-card";
 import { useDashboard } from "./dashboard-context";
 import {
@@ -64,10 +64,11 @@ export const MyReportsSection: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {filteredReports.map((report) => (
+        {filteredReports.map((report, idx) => (
           <ReportCard
             key={report.id}
             report={report}
+            index={idx}
             isUpvoted={upvotedIds.has(report.id)}
             onUpvote={upvoteReport}
             onOpenDetails={setSelectedReport}
@@ -97,9 +98,14 @@ export const MyReportsSection: React.FC = () => {
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                 <div className="absolute bottom-3 left-4 right-4 text-white">
-                  <Badge variant="secondary" className="text-[10px] font-bold mb-1">
-                    {selectedReport.category}
-                  </Badge>
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <span className="text-[10px] font-mono font-bold text-white bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-lg border border-white/20">
+                      {formatReportId(selectedReport.id)}
+                    </span>
+                    <Badge variant="secondary" className="text-[10px] font-bold">
+                      {selectedReport.category}
+                    </Badge>
+                  </div>
                   <h3 className="text-lg font-black leading-tight truncate">
                     {selectedReport.title}
                   </h3>

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Flame, Sparkles, MapPin, Calendar, Heart } from "lucide-react";
 import { ReportCard } from "./report-card";
 import { useDashboard } from "./dashboard-context";
-import { ReportItem, REJECTION_REASON_LABELS } from "./mock-data";
+import { ReportItem, REJECTION_REASON_LABELS, formatReportId } from "./mock-data";
 import {
   Dialog,
   DialogContent,
@@ -30,13 +30,14 @@ export const PopularReportsSection: React.FC = () => {
 
       {/* Carrusel Horizontal Scrollable en Móviles con tarjetas de diseño idéntico */}
       <div className="flex items-stretch gap-4 overflow-x-auto pb-3 pt-1 px-1 snap-x snap-mandatory scrollbar-none max-w-full">
-        {popularReports.map((report) => (
+        {popularReports.map((report, idx) => (
           <div
             key={report.id}
             className="w-[82vw] sm:w-[320px] shrink-0 snap-align-start flex flex-col"
           >
             <ReportCard
               report={report}
+              index={idx}
               isUpvoted={upvotedIds.has(report.id)}
               onUpvote={upvoteReport}
               onOpenDetails={setSelectedReport}
@@ -61,9 +62,14 @@ export const PopularReportsSection: React.FC = () => {
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                 <div className="absolute bottom-3 left-4 right-4 text-white">
-                  <Badge variant="secondary" className="text-[10px] font-bold mb-1">
-                    {selectedReport.category}
-                  </Badge>
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <span className="text-[10px] font-mono font-bold text-white bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-lg border border-white/20">
+                      {formatReportId(selectedReport.id)}
+                    </span>
+                    <Badge variant="secondary" className="text-[10px] font-bold">
+                      {selectedReport.category}
+                    </Badge>
+                  </div>
                   <h3 className="text-lg font-black leading-tight truncate">
                     {selectedReport.title}
                   </h3>
