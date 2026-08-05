@@ -1,6 +1,12 @@
+import dotenv from "dotenv";
+import path from "path";
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@/src/generated/prisma/client";
+
+// Ensure environment variables are loaded when imported outside Next.js runtime context
+dotenv.config({ path: path.resolve(process.cwd(), ".env.local") });
+dotenv.config({ path: path.resolve(process.cwd(), ".env") });
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
