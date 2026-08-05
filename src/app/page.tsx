@@ -1,6 +1,7 @@
 import {
   AISection,
   Benefits,
+  StatsSection,
   CTA,
   Footer,
   Hero,
@@ -10,19 +11,20 @@ import {
 
 export default function Home() {
   return (
-    // GSAP: montar ScrollTrigger / reveals globales desde este layout de página
     <div className="flex min-h-full flex-1 flex-col bg-background">
       <Navbar />
       <main className="flex-1">
-        {/* GSAP: Hero entrance */}
+        {/* Hero Principal con composición gráfica e IA */}
         <Hero />
-        {/* GSAP: scroll reveal + cards */}
+        {/* Proceso Institucional en 4 Pasos */}
         <HowItWorks />
-        {/* GSAP: AI conversation sequence */}
+        {/* Sección de IA y Visión Computacional */}
         <AISection />
-        {/* GSAP: scroll reveal + cards */}
+        {/* Beneficios de la Comunidad Escolar */}
         <Benefits />
-        {/* GSAP: CTA emphasis */}
+        {/* Estadísticas e Impacto Animados con GSAP */}
+        <StatsSection />
+        {/* Llamado a la Acción Banner */}
         <CTA />
       </main>
       <Footer />

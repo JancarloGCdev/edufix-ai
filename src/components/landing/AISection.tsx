@@ -1,167 +1,118 @@
+"use client";
+
+import React from "react";
 import {
   Bot,
-  Camera,
-  CheckCircle2,
-  ChevronDown,
-  Search,
+  CopyX,
+  ScanSearch,
+  Zap,
+  ShieldAlert,
+  Lock,
+  Sparkles,
 } from "lucide-react";
-import { Badge } from "@/src/components/ui/badge";
-import { buttonVariants } from "@/src/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/src/components/ui/card";
-import { cn } from "@/src/lib/utils";
+import { Card, CardContent } from "@/src/components/ui/card";
 
-const flow = [
+const aiFeatures = [
   {
-    key: "upload",
-    title: "Imagen subida",
-    detail: "Foto del baño · Edificio A",
-    icon: Camera,
-    tone: "bg-sky-50 text-sky-700",
+    title: "Detecta Duplicados",
+    description: "Compara imágenes y ubicaciones en milisegundos para unir solicitudes idénticas y evitar saturar a coordinación.",
+    icon: CopyX,
+    color: "from-blue-500/15 to-indigo-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30",
   },
   {
-    key: "analyze",
-    title: "Analizando…",
-    detail: "Leyendo descripción y ubicación",
-    icon: Bot,
-    tone: "bg-primary/10 text-primary",
+    title: "Analiza Imágenes en Tiempo Real",
+    description: "Reconoce el objeto dañado en la fotografía y sugiere la categoría (Tecnología, Infraestructura, Plomería, etc.).",
+    icon: ScanSearch,
+    color: "from-purple-500/15 to-pink-500/15 text-purple-600 dark:text-purple-400 border-purple-500/30",
   },
   {
-    key: "compare",
-    title: "Comparando incidencias…",
-    detail: "Revisando reportes abiertos cercanos",
-    icon: Search,
-    tone: "bg-slate-100 text-slate-700",
+    title: "Prioriza Incidencias",
+    description: "Calcula un puntaje de riesgo e impacto para colocar las emergencias físicas (fugas, cortocircuitos) arriba en la cola.",
+    icon: Zap,
+    color: "from-amber-500/15 to-orange-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30",
   },
   {
-    key: "match",
-    title: "Coincidencia encontrada",
-    detail: "Reporte #184 · hace 2 horas",
-    icon: CheckCircle2,
-    tone: "bg-emerald-50 text-emerald-700",
-    match: "94%",
+    title: "Evita Spam y Fotos Ilegibles",
+    description: "Filtra automáticamente imágenes borrosas, desenfocadas o no relacionadas con el entorno de la institución.",
+    icon: ShieldAlert,
+    color: "from-emerald-500/15 to-teal-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+  },
+  {
+    title: "Detecta Contenido Inapropiado",
+    description: "Moderación proactiva de seguridad que descarta contenido fuera del marco institucional o inapropiado.",
+    icon: Lock,
+    color: "from-rose-500/15 to-red-500/15 text-rose-600 dark:text-rose-400 border-rose-500/30",
   },
 ] as const;
 
 export function AISection() {
   return (
-    // GSAP: scroll reveal + secuencia del flujo de IA (paso a paso)
     <section
       id="ia"
       data-gsap="ai-section"
-      data-gsap-reveal="section"
-      className="border-b border-border/70 bg-[linear-gradient(180deg,oklch(0.985_0.008_255),oklch(0.975_0.018_255))]"
+      className="relative border-b border-border/60 bg-dot-pattern py-16 sm:py-24 overflow-hidden"
     >
-      <div className="mx-auto flex max-w-5xl flex-col gap-8 px-4 py-14 sm:px-6 sm:py-16 md:gap-12 md:px-8 md:py-20 lg:grid lg:grid-cols-2 lg:items-start">
-        <div data-gsap="ai-copy" className="max-w-xl">
-          <p className="mb-3 text-sm font-medium text-primary">
-            Inteligencia artificial
-          </p>
-          <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-            La IA te habla en cada paso
+      {/* Luz Difusa de fondo */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[600px] rounded-full bg-gradient-to-r from-blue-600/10 via-indigo-600/10 to-purple-600/10 blur-[140px]"
+      />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        
+        {/* Header de Sección */}
+        <div className="mx-auto max-w-3xl text-center space-y-4">
+          <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 backdrop-blur-md">
+            <Bot className="size-4 text-indigo-600 dark:text-indigo-400" />
+            <span className="text-xs font-black uppercase tracking-wider text-indigo-700 dark:text-indigo-300">
+              Inteligencia Artificial Proactiva
+            </span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-foreground">
+            Potenciado por Visión Computacional e{" "}
+            <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text-transparent">
+              IA Asistida
+            </span>
           </h2>
-          <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground sm:text-base">
-            No es una caja negra. Ves qué analiza, qué encontró y decides si
-            confirmar el reporte o unirlo a uno existente.
+
+          <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+            EduFix AI procesa cada imagen cargada para moderar, prevenir duplicados y ayudar al colegio a tomar decisiones informadas.
           </p>
         </div>
 
-        {/* GSAP: animar cada paso del flujo como conversación */}
-        <Card
-          data-gsap="ai-flow"
-          className="rounded-2xl shadow-[0_1px_2px_oklch(0.2_0.02_255_/0.04),0_8px_24px_oklch(0.2_0.02_255_/0.05)] ring-border/50"
-        >
-          <CardHeader className="border-b border-border/60 pb-4">
-            <CardTitle className="text-base">Flujo de análisis</CardTitle>
-            <CardDescription>
-              Así se ve cuando reportas desde el celular
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent className="space-y-0 pt-1">
-            {flow.map((step, index) => {
-              const Icon = step.icon;
-              const isLast = index === flow.length - 1;
-
-              return (
-                <div key={step.key} data-gsap="ai-step" className="relative">
-                  <div className="flex items-start gap-3 py-3">
-                    <span
-                      className={cn(
-                        "flex size-11 shrink-0 items-center justify-center rounded-2xl",
-                        step.tone
-                      )}
-                    >
-                      <Icon className="size-5" aria-hidden />
-                    </span>
-
-                    <div className="min-w-0 flex-1 pt-0.5">
-                      <div className="flex items-start justify-between gap-2">
-                        <p className="text-[15px] font-medium text-foreground">
-                          {step.title}
-                        </p>
-                        {"match" in step ? (
-                          <Badge className="rounded-lg px-2.5 tabular-nums">
-                            {step.match}
-                          </Badge>
-                        ) : null}
-                      </div>
-                      <p className="mt-0.5 text-sm text-muted-foreground">
-                        {step.detail}
-                      </p>
-                    </div>
+        {/* Grid de Tarjetas de IA */}
+        <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {aiFeatures.map((feat, idx) => {
+            const Icon = feat.icon;
+            return (
+              <Card
+                key={feat.title}
+                data-gsap="card"
+                className={`group relative rounded-3xl border border-border/80 bg-card/85 backdrop-blur-xl p-6 transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/10 hover:-translate-y-1 ${
+                  idx === 0 ? "md:col-span-2 lg:col-span-1" : ""
+                }`}
+              >
+                <CardContent className="p-0 space-y-4">
+                  <div className={`size-12 rounded-2xl bg-gradient-to-br ${feat.color} border flex items-center justify-center transition-transform group-hover:scale-110`}>
+                    <Icon className="size-6" />
                   </div>
 
-                  {!isLast ? (
-                    <div
-                      className="ml-[1.35rem] flex h-5 items-center"
-                      aria-hidden
-                    >
-                      <ChevronDown className="size-4 text-muted-foreground/70" />
-                    </div>
-                  ) : null}
-                </div>
-              );
-            })}
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-2">
+                      <span>{feat.title}</span>
+                      <Sparkles className="size-3.5 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      {feat.description}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
 
-            <div
-              data-gsap="ai-confirm"
-              className="mt-2 rounded-2xl border border-border/70 bg-background p-4"
-            >
-              <p className="text-[15px] font-medium text-foreground">
-                ¿Deseas confirmar este reporte?
-              </p>
-              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                Puedes unirlo al caso existente o crear uno nuevo.
-              </p>
-              <div className="mt-4 flex flex-col gap-2 sm:flex-row">
-                <a
-                  href="#cta"
-                  className={cn(
-                    buttonVariants({ size: "lg" }),
-                    "min-h-11 w-full px-4 text-[15px] sm:flex-1"
-                  )}
-                >
-                  Confirmar
-                </a>
-                <a
-                  href="#cta"
-                  className={cn(
-                    buttonVariants({ size: "lg", variant: "outline" }),
-                    "min-h-11 w-full px-4 text-[15px] sm:flex-1"
-                  )}
-                >
-                  Crear nuevo
-                </a>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </section>
   );
