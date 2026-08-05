@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { Flame, Sparkles, MapPin, Calendar, Heart } from "lucide-react";
+import React, { useState, useRef } from "react";
+import { Flame, Sparkles, MapPin, Calendar, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import { ReportCard } from "./report-card";
 import { useDashboard } from "./dashboard-context";
 import { ReportItem, REJECTION_REASON_LABELS, formatReportId } from "./mock-data";
@@ -15,6 +15,15 @@ import { Badge } from "@/src/components/ui/badge";
 export const PopularReportsSection: React.FC = () => {
   const { popularReports, upvoteReport, upvotedIds } = useDashboard();
   const [selectedReport, setSelectedReport] = useState<ReportItem | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollLeft = () => {
+    scrollRef.current?.scrollBy({ left: -340, behavior: "smooth" });
+  };
+
+  const scrollRight = () => {
+    scrollRef.current?.scrollBy({ left: 340, behavior: "smooth" });
+  };
 
   return (
     <section aria-label="Problemas populares comunitarios" className="space-y-3">
@@ -23,13 +32,42 @@ export const PopularReportsSection: React.FC = () => {
           <Flame className="size-5 text-orange-500 fill-orange-500/20" />
           Problemas populares
         </h2>
-        <span className="text-xs text-muted-foreground font-semibold">
-          Desliza horizontalmente ➔
-        </span>
+        
+        {/* Controles de desplazamiento para escritorio y móviles */}
+        <div className="flex items-center gap-2">
+          <div className="hidden sm:flex items-center gap-1">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={scrollLeft}
+              aria-label="Desplazar anterior"
+              className="size-7 rounded-lg border-border/70 text-muted-foreground hover:text-foreground"
+            >
+              <ChevronLeft className="size-4" />
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={scrollRight}
+              aria-label="Desplazar siguiente"
+              className="size-7 rounded-lg border-border/70 text-muted-foreground hover:text-foreground"
+            >
+              <ChevronRight className="size-4" />
+            </Button>
+          </div>
+          <span className="text-xs text-muted-foreground font-semibold sm:hidden">
+            Desliza horizontalmente ➔
+          </span>
+        </div>
       </div>
 
-      {/* Carrusel Horizontal Scrollable en Móviles con tarjetas de diseño idéntico */}
-      <div className="flex items-stretch gap-4 overflow-x-auto pb-3 pt-1 px-1 snap-x snap-mandatory scrollbar-none max-w-full">
+      {/* Carrusel Horizontal Scrollable en Móviles y Escritorio */}
+      <div
+        ref={scrollRef}
+        className="flex items-stretch gap-4 overflow-x-auto pb-3 pt-1 px-1 snap-x snap-mandatory scrollbar-none max-w-full scroll-smooth"
+      >
         {popularReports.map((report, idx) => (
           <div
             key={report.id}

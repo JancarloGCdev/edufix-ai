@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   HeaderSection,
   SummarySection,
@@ -12,8 +12,9 @@ import {
 } from "@/src/components/dashboard";
 import { ReportItem } from "./mock-data";
 import { TeacherReportDetailModal } from "./teacher-report-detail-modal";
-import { ShieldCheck, AlertCircle, Clock, Sparkles } from "lucide-react";
+import { ShieldCheck, AlertCircle, Clock, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/src/components/ui/badge";
+import { Button } from "@/src/components/ui/button";
 import type { AuthUser } from "@/src/services/auth/session";
 
 interface TeacherDashboardViewProps {
@@ -56,36 +57,7 @@ const TeacherDashboardContent: React.FC<TeacherDashboardViewProps> = ({ user }) 
       <SummarySection />
 
       {/* 3. SECCIÓN: Reportes Prioritarios (Muestra reportes urgentes o más votados) */}
-      <section aria-label="Reportes prioritarios" className="space-y-3 pt-1">
-        <div className="flex items-center justify-between px-1">
-          <h2 className="text-base sm:text-lg font-black tracking-tight text-foreground flex items-center gap-2">
-            <AlertCircle className="size-5 text-rose-500" />
-            Reportes Prioritarios
-          </h2>
-          <span className="text-xs font-bold text-rose-600 dark:text-rose-400 bg-rose-500/10 px-2.5 py-0.5 rounded-full">
-            {priorityReports.length} atención requerida
-          </span>
-        </div>
-
-        {/* Carrusel horizontal o grid según pantalla */}
-        <div className="flex items-stretch gap-4 overflow-x-auto pb-3 pt-1 px-1 snap-x snap-mandatory scrollbar-none max-w-full">
-          {priorityReports.map((report, idx) => (
-            <div
-              key={report.id}
-              className="w-[82vw] sm:w-[320px] shrink-0 snap-align-start flex flex-col"
-            >
-              <ReportCard
-                report={report}
-                index={idx}
-                isUpvoted={upvotedIds.has(report.id)}
-                onUpvote={upvoteReport}
-                onOpenDetails={setSelectedReport}
-                className="h-full"
-              />
-            </div>
-          ))}
-        </div>
-      </section>
+      <TeacherPrioritySection priorityReports={priorityReports} upvotedIds={upvotedIds} upvoteReport={upvoteReport} setSelectedReport={setSelectedReport} />
 
       {/* 4. SECCIÓN: Últimos Reportes */}
       <section aria-label="Últimos reportes registrados" className="space-y-4 pt-2">
@@ -123,6 +95,90 @@ const TeacherDashboardContent: React.FC<TeacherDashboardViewProps> = ({ user }) 
       {/* BARRA MÓVIL INFERIOR */}
       <BottomNavigation />
     </div>
+  );
+};
+
+interface TeacherPrioritySectionProps {
+  priorityReports: ReportItem[];
+  upvotedIds: Set<string>;
+  upvoteReport: (id: string) => void;
+  setSelectedReport: (report: ReportItem) => void;
+}
+
+const TeacherPrioritySection: React.FC<TeacherPrioritySectionProps> = ({
+  priorityReports,
+  upvotedIds,
+  upvoteReport,
+  setSelectedReport,
+}) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollLeft = () => {
+    scrollRef.current?.scrollBy({ left: -340, behavior: "smooth" });
+  };
+
+  const scrollRight = () => {
+    scrollRef.current?.scrollBy({ left: 340, behavior: "smooth" });
+  };
+
+  return (
+    <section aria-label="Reportes prioritarios" className="space-y-3 pt-1">
+      <div className="flex items-center justify-between px-1">
+        <h2 className="text-base sm:text-lg font-black tracking-tight text-foreground flex items-center gap-2">
+          <AlertCircle className="size-5 text-rose-500" />
+          Reportes Prioritarios
+        </h2>
+
+        <div className="flex items-center gap-2">
+          <div className="hidden sm:flex items-center gap-1">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={scrollLeft}
+              aria-label="Desplazar anterior"
+              className="size-7 rounded-lg border-border/70 text-muted-foreground hover:text-foreground"
+            >
+              <ChevronLeft className="size-4" />
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              onClick={scrollRight}
+              aria-label="Desplazar siguiente"
+              className="size-7 rounded-lg border-border/70 text-muted-foreground hover:text-foreground"
+            >
+              <ChevronRight className="size-4" />
+            </Button>
+          </div>
+          <span className="text-xs font-bold text-rose-600 dark:text-rose-400 bg-rose-500/10 px-2.5 py-0.5 rounded-full">
+            {priorityReports.length} atención requerida
+          </span>
+        </div>
+      </div>
+
+      <div
+        ref={scrollRef}
+        className="flex items-stretch gap-4 overflow-x-auto pb-3 pt-1 px-1 snap-x snap-mandatory scrollbar-none max-w-full scroll-smooth"
+      >
+        {priorityReports.map((report, idx) => (
+          <div
+            key={report.id}
+            className="w-[82vw] sm:w-[320px] shrink-0 snap-align-start flex flex-col"
+          >
+            <ReportCard
+              report={report}
+              index={idx}
+              isUpvoted={upvotedIds.has(report.id)}
+              onUpvote={upvoteReport}
+              onOpenDetails={setSelectedReport}
+              className="h-full"
+            />
+          </div>
+        ))}
+      </div>
+    </section>
   );
 };
 
