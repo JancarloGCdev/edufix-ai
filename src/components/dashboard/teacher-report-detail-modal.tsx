@@ -359,7 +359,7 @@ export const TeacherReportDetailModal: React.FC<TeacherReportDetailModalProps> =
                   </div>
                   {report.resolutionNotes && (
                     <p className="text-xs text-muted-foreground font-medium pt-1">
-                      Nota de reparación: "{report.resolutionNotes}"
+                      Nota de reparación: &quot;{report.resolutionNotes}&quot;
                     </p>
                   )}
                 </div>

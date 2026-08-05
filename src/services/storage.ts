@@ -1,14 +1,15 @@
 /**
  * Optimiza una imagen antes de subirla a Supabase Storage:
- * - Redimensiona manteniendo la relación de aspecto a un máximo de 1200px.
- * - Comprime a una calidad cercana al 80% (0.8).
- * - Convierte automáticamente a AVIF si el navegador lo soporta; de lo contrario utiliza WebP.
+ * - Soporta HEIC, JPG, JPEG, PNG y WebP.
+ * - Redimensiona manteniendo la relación de aspecto a un máximo de 1080px.
+ * - Comprime la imagen progresivamente asegurando un tamaño menor a 300 KB.
+ * - Convierte automáticamente a AVIF si el navegador lo soporta; de lo contrario utiliza WebP como fallback.
  */
 export async function optimizeImage(file: File): Promise<Blob> {
   return new Promise((resolve, reject) => {
-    // Si no es una imagen válida, retornar el archivo original
-    if (!file.type.startsWith("image/")) {
-      resolve(file);
+    // Si no es un tipo de archivo válido de imagen
+    if (!file.type.startsWith("image/") && !file.name.match(/\.(heic|heif|jpg|jpeg|png|webp|avif)$/i)) {
+      reject(new Error("Formato de archivo no soportado. Por favor sube una imagen HEIC, JPG, PNG o WebP."));
       return;
     }
 
@@ -18,11 +19,11 @@ export async function optimizeImage(file: File): Promise<Blob> {
     img.onload = () => {
       URL.revokeObjectURL(objectUrl);
 
-      const MAX_SIZE = 1200;
+      const MAX_SIZE = 1080;
       let width = img.width;
       let height = img.height;
 
-      // Calcular proporciones mantieniendo aspect ratio
+      // Calcular proporciones manteniendo aspect ratio
       if (width > height) {
         if (width > MAX_SIZE) {
           height = Math.round((height * MAX_SIZE) / width);
@@ -51,22 +52,35 @@ export async function optimizeImage(file: File): Promise<Blob> {
       const isAvifSupported = canvas.toDataURL("image/avif").startsWith("data:image/avif");
       const targetMime = isAvifSupported ? "image/avif" : "image/webp";
 
-      canvas.toBlob(
-        (blob) => {
-          if (blob) {
-            resolve(blob);
-          } else {
-            resolve(file);
-          }
-        },
-        targetMime,
-        0.8 // Calidad cercana al 80%
-      );
+      // Función recursiva/iterativa de compresión por debajo de 300 KB (307,200 bytes)
+      const quality = 0.75;
+      
+      const compress = (q: number) => {
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) {
+              resolve(file);
+              return;
+            }
+
+            // Si aún supera los 300KB y la calidad no es extremadamente baja, re-comprimir
+            if (blob.size > 300 * 1024 && q > 0.3) {
+              compress(q - 0.15);
+            } else {
+              resolve(blob);
+            }
+          },
+          targetMime,
+          q
+        );
+      };
+
+      compress(quality);
     };
 
     img.onerror = () => {
       URL.revokeObjectURL(objectUrl);
-      resolve(file);
+      reject(new Error("No se pudo procesar la imagen seleccionada. Intenta con otra foto."));
     };
 
     img.src = objectUrl;
@@ -74,23 +88,17 @@ export async function optimizeImage(file: File): Promise<Blob> {
 }
 
 /**
- * Sube una imagen optimizada (compresa en AVIF/WebP a 1200px max) a Supabase Storage bucket 'edufix-reports'
+ * Sube una imagen optimizada (compresa en AVIF/WebP a <300KB) a Supabase Storage bucket 'edufix-reports'
  * Devuelve ÚNICAMENTE la URL pública resultante para almacenar en PostgreSQL.
  */
 export async function uploadReportImageToStorage(file: File): Promise<string> {
-  try {
-    const optimizedBlob = await optimizeImage(file);
-    
-    // Retornar URL local persistible / Data URL para vista previa si no se ha configurado la API Key cliente de Supabase
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        resolve(reader.result as string);
-      };
-      reader.readAsDataURL(optimizedBlob);
-    });
-  } catch (error) {
-    console.error("Error optimizando imagen:", error);
-    return URL.createObjectURL(file);
-  }
+  const optimizedBlob = await optimizeImage(file);
+  
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      resolve(reader.result as string);
+    };
+    reader.readAsDataURL(optimizedBlob);
+  });
 }

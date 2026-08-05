@@ -201,7 +201,7 @@ export const PublicSocialFeed: React.FC = () => {
                     />
                     {selectedReport.resolutionNotes && (
                       <p className="text-xs text-muted-foreground italic">
-                        "{selectedReport.resolutionNotes}"
+                        &quot;{selectedReport.resolutionNotes}&quot;
                       </p>
                     )}
                   </div>

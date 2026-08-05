@@ -38,6 +38,8 @@ export const ActionReportButton: React.FC = () => {
   // Imagen retenida ÚNICAMENTE EN MEMORIA mediante File Object
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [processingImage, setProcessingImage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Estados progresivos del análisis visual de IA
   const [analysisProgress, setAnalysisProgress] = useState({
@@ -64,16 +66,36 @@ export const ActionReportButton: React.FC = () => {
   const analysisContainerRef = useRef<HTMLDivElement>(null);
 
   // Al seleccionar la fotografía (Cámara o Galería)
-  const handleImageCaptured = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageCaptured = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setImageFile(file);
-    const objectUrl = URL.createObjectURL(file);
-    setPreviewUrl(objectUrl);
+    setErrorMessage(null);
+    setProcessingImage(true);
 
-    // Avanzar automáticamente a la pantalla de Análisis de IA
-    startAIAnalysis();
+    try {
+      // Validar y optimizar/convertir imagen a AVIF/WebP < 300KB
+      const { optimizeImage } = await import("@/src/services/storage");
+      const optimizedBlob = await optimizeImage(file);
+
+      // Crear un objeto File optimizado
+      const optimizedFile = new File([optimizedBlob], file.name.replace(/\.[^/.]+$/, "") + ".webp", {
+        type: optimizedBlob.type || "image/webp",
+      });
+
+      setImageFile(optimizedFile);
+      const objectUrl = URL.createObjectURL(optimizedBlob);
+      setPreviewUrl(objectUrl);
+      setProcessingImage(false);
+
+      // Avanzar automáticamente a la pantalla de Análisis de IA
+      startAIAnalysis();
+    } catch (err: unknown) {
+      console.error("Error al procesar la fotografía:", err);
+      setProcessingImage(false);
+      const message = err instanceof Error ? err.message : "No se pudo procesar la fotografía. Verifica el formato e intenta nuevamente.";
+      setErrorMessage(message);
+    }
   };
 
   // Inicio de la secuencia de análisis visual de 2-3 segundos
@@ -187,7 +209,7 @@ export const ActionReportButton: React.FC = () => {
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/*"
+        accept="image/*,.heic,.heif"
         capture="environment"
         onChange={handleImageCaptured}
         className="hidden"
@@ -203,24 +225,38 @@ export const ActionReportButton: React.FC = () => {
           {step === "CAMERA" && (
             <div className="p-6 flex flex-col items-center justify-center text-center gap-5 py-10">
               <div className="size-20 rounded-full bg-primary/10 text-primary flex items-center justify-center ring-8 ring-primary/5">
-                <Camera className="size-10" />
+                {processingImage ? (
+                  <Sparkles className="size-10 animate-spin text-primary" />
+                ) : (
+                  <Camera className="size-10" />
+                )}
               </div>
               <div className="space-y-1.5 max-w-xs">
                 <h3 className="text-xl font-black text-foreground">
-                  Capturar Fotografía
+                  {processingImage ? "Procesando Fotografía..." : "Capturar Fotografía"}
                 </h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  Toma la foto del problema directamente con la cámara de tu dispositivo o selecciona desde tu galería.
+                  {processingImage
+                    ? "Optimizando imagen (<300 KB) y convirtiendo formato para móviles..."
+                    : "Toma la foto del problema directamente con la cámara de tu dispositivo o selecciona desde tu galería."}
                 </p>
               </div>
+
+              {errorMessage && (
+                <div className="w-full p-3 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-400 text-xs font-semibold flex items-center gap-2">
+                  <AlertCircle className="size-4 shrink-0 text-rose-500" />
+                  <span>{errorMessage}</span>
+                </div>
+              )}
 
               <div className="flex flex-col w-full gap-2.5 pt-2">
                 <Button
                   onClick={() => fileInputRef.current?.click()}
+                  disabled={processingImage}
                   className="w-full h-12 rounded-2xl bg-primary text-primary-foreground font-bold text-sm gap-2"
                 >
                   <Camera className="size-5" />
-                  Abrir Cámara o Galería
+                  {processingImage ? "Optimizando..." : "Abrir Cámara o Galería"}
                 </Button>
                 <Button
                   variant="ghost"
