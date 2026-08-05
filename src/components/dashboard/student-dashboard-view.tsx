@@ -25,7 +25,7 @@ const StudentDashboardContent: React.FC<StudentDashboardViewProps> = ({ user }) 
   return (
     <div
       ref={containerRef}
-      className="min-h-screen bg-background text-foreground pb-28 md:pb-12 pt-3 px-3.5 sm:px-6 md:px-8 max-w-4xl mx-auto space-y-5 sm:space-y-6 antialiased"
+      className="min-h-screen bg-background text-foreground pb-28 md:pb-12 pt-3 px-3.5 sm:px-6 md:px-8 max-w-4xl mx-auto space-y-6 antialiased"
     >
       {/* Top Status Banner */}
       <div className="dash-fade flex items-center justify-between px-1">
@@ -38,36 +38,21 @@ const StudentDashboardContent: React.FC<StudentDashboardViewProps> = ({ user }) 
         </span>
       </div>
 
-      {/* 1. HEADER: Datos reales de Auth.js, saludo dinámico por hora y foto con menú */}
+      {/* 1. HEADER: Datos reales de Auth.js y menú de perfil */}
       <HeaderSection user={user} />
 
-      {/* 3. BOTÓN PRINCIPAL: CTA Flotante destacado para reportar */}
+      {/* 2. BOTÓN PRINCIPAL: Disparo directo a cámara y flujo de IA */}
       <ActionReportButton />
 
-      {/* 2. RESUMEN: Indicadores dinámicos (Pendientes, En revisión, Resueltos, Rechazados) */}
+      {/* 3. RESUMEN: Indicadores dinámicos animados (Pendientes, En revisión, Resueltos, Rechazados) */}
       <SummarySection />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-1">
-        {/* 4. MIS REPORTES: Cards modernas tipo Tinder/Airbnb con fotos y estado de rechazo */}
-        <div className="md:col-span-2">
-          <MyReportsSection />
-        </div>
+      {/* 4. SECCIÓN PROBLEMAS POPULARES: Carrusel Horizontal Móvil con Cards Clickeables */}
+      <PopularReportsSection />
 
-        {/* 5. PROBLEMAS POPULARES E IA */}
-        <div className="space-y-4">
-          <PopularReportsSection />
-
-          {/* Arquitectura de IA Integrada */}
-          <div className="p-4 rounded-3xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/20 space-y-2">
-            <div className="flex items-center gap-2 text-primary font-black text-xs uppercase">
-              <Sparkles className="size-4" />
-              <span>EduFix AI Core & Safety</span>
-            </div>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              Sistema preparado para detección automática de fotos no institucionales, spam, duplicados, borrosidad y priorización de impacto.
-            </p>
-          </div>
-        </div>
+      {/* 5. SECCIÓN MIS REPORTES: Grid de Cards con Bordes Adaptativos y Sombras Suaves por Estado */}
+      <div className="pt-2">
+        <MyReportsSection />
       </div>
 
       {/* BARRA MÓVIL INFERIOR */}

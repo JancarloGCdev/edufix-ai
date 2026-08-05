@@ -1,5 +1,6 @@
 export * from "./mock-data";
 export * from "./dashboard-context";
+export * from "./report-card";
 export * from "./header-section";
 export * from "./summary-section";
 export * from "./action-report-button";
