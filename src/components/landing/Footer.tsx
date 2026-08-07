@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { Wrench, Sparkles, Code2, Heart } from "lucide-react";
+import { Code2, Heart } from "lucide-react";
+import { SchoolLogo } from "@/src/components/common";
 import { Badge } from "@/src/components/ui/badge";
 
 export function Footer() {
@@ -11,12 +12,11 @@ export function Footer() {
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
 
-          {/* Columna 1: Branding EduFix AI */}
+          {/* Columna 1: Branding institucional */}
           <div className="md:col-span-5 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="flex size-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 text-white shadow-md shadow-blue-500/20">
-                <Wrench className="size-5" />
-              </div>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <SchoolLogo size="lg" linkClassName="min-h-0 min-w-0 self-start" />
+              <div className="hidden h-8 w-px bg-border/60 sm:block" aria-hidden />
               <div className="flex flex-col">
                 <span className="text-lg font-black tracking-tight text-foreground">
                   EduFix <span className="text-primary font-mono">AI</span>

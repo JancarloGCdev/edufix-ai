@@ -12,7 +12,8 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/src/components/ui/dialog";
-import { LogOut, User as UserIcon, Mail, Shield, ChevronDown, School } from "lucide-react";
+import { LogOut, User as UserIcon, Mail, Shield, ChevronDown } from "lucide-react";
+import { SchoolLogo } from "@/src/components/common";
 import { signOutCurrentUser } from "@/src/features/auth/actions";
 import type { AuthUser } from "@/src/services/auth/session";
 
@@ -54,17 +55,27 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({ user }) => {
 
   return (
     <>
-      <header className="dash-fade relative z-20 flex items-center justify-between rounded-2xl bg-card/80 p-4 backdrop-blur-md border border-border/60 shadow-xs sm:p-6 transition-all">
-        {/* Lado izquierdo: Saludo e Institución */}
-        <div className="flex flex-col gap-0.5">
+      <header className="dash-fade relative z-20 rounded-2xl bg-card/80 p-4 backdrop-blur-md border border-border/60 shadow-xs sm:p-6 transition-all space-y-4">
+        {/* Marca institucional */}
+        <div className="flex items-center justify-between gap-3 border-b border-border/50 pb-3">
+          <SchoolLogo
+            size="sm"
+            isAuthenticated
+            showText
+            linkClassName="min-h-0 min-w-0 -ml-1"
+          />
+          <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground sm:text-xs">
+            EduFix AI
+          </span>
+        </div>
+
+        <div className="flex items-center justify-between gap-3">
+        {/* Lado izquierdo: Saludo */}
+        <div className="flex flex-col gap-0.5 min-w-0">
           <h1 className="text-lg sm:text-2xl font-bold tracking-tight text-foreground flex items-center gap-1.5 flex-wrap">
             <span>👋 {getGreeting()},</span>
             <span className="text-primary font-extrabold">{firstName}</span>
           </h1>
-          <p className="text-xs sm:text-sm font-medium text-muted-foreground flex items-center gap-1">
-            <School className="size-3.5 shrink-0 text-primary/70" />
-            <span>Institución Educativa GABO</span>
-          </p>
         </div>
 
         {/* Esquina superior derecha: Foto del usuario con menú interactivo */}
@@ -161,6 +172,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({ user }) => {
               </div>
             </>
           )}
+        </div>
         </div>
       </header>
 

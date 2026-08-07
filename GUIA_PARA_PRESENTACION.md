@@ -173,4 +173,4 @@ Si el jurado te pregunta por las tecnologías, no te asustes. Utiliza estas anal
 
 ## 🌈 10. Conclusión sobre el Impacto en la IE GABO
 
-EduFix AI demuestra cómo la tecnología accesible y bien diseñada puede transformar la cultura de un colegio. Al empoderar a los estudiantes con una herramienta para cuidar su entorno y facilitar el trabajo del personal de mantenimiento, la **IE Gabriel García Márquez** se convierte en un referente de innovación, sentido de pertenencia y eficiencia institucional. ¡Mucho éxito en la presentación! 🚀
+EduFix AI demuestra cómo la tecnología accesible y bien diseñada puede transformar la cultura de un colegio. Al empoderar a los estudiantes con una herramienta para cuidar su entorno y facilitar el trabajo del personal de mantenimiento, la **IE GABO** se convierte en un referente de innovación, sentido de pertenencia y eficiencia institucional. ¡Mucho éxito en la presentación! 🚀

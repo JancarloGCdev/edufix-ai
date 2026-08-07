@@ -39,6 +39,7 @@ import {
   DialogFooter,
 } from "@/src/components/ui/dialog";
 import { BottomNavigation } from "@/src/components/dashboard";
+import { SchoolLogo } from "@/src/components/common";
 import type { AuthUser } from "@/src/services/auth/session";
 import {
   fetchAllUsersAction,
@@ -245,12 +246,17 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({ user }) 
       {/* Header Banner de Consola de Administración */}
       <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white border-b border-border/40 px-4 py-6 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3.5">
-            <div className="size-12 rounded-2xl bg-blue-600/30 border border-blue-400/40 text-blue-400 flex items-center justify-center shrink-0 shadow-md">
-              <Shield className="size-6" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3.5 min-w-0">
+            <SchoolLogo
+              size="md"
+              isAuthenticated
+              showText
+              textTone="light"
+              linkClassName="min-h-0 min-w-0 shrink-0"
+            />
+            <div className="hidden h-10 w-px bg-white/15 sm:block" aria-hidden />
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
                 <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white">
                   Panel de Administración Real
                 </h1>

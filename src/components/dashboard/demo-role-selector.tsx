@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/src/components/ui/avatar"
 import { Badge } from "@/src/components/ui/badge";
 import { Card } from "@/src/components/ui/card";
 import { GraduationCap, UserCheck, Wrench, Shield, Sparkles, ArrowRight, School } from "lucide-react";
+import { SchoolLogo } from "@/src/components/common";
 import type { AuthUser } from "@/src/services/auth/session";
 
 interface DemoRoleSelectorProps {
@@ -30,7 +31,7 @@ export const DemoRoleSelector: React.FC<DemoRoleSelectorProps> = ({
     <div className="min-h-screen bg-background text-foreground flex items-center justify-center p-4 sm:p-6 antialiased">
       <div className="w-full max-w-lg space-y-6">
         {/* Banner de Modo Demostración */}
-        <div className="flex items-center justify-between px-1">
+        <div className="flex items-center justify-between px-1 gap-3">
           <Badge
             variant="outline"
             className="gap-1.5 bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30 text-xs font-bold px-3 py-1"
@@ -38,9 +39,12 @@ export const DemoRoleSelector: React.FC<DemoRoleSelectorProps> = ({
             <Sparkles className="size-3.5 text-amber-500 animate-spin" />
             <span>Modo Demostración / Presentación</span>
           </Badge>
-          <span className="text-xs font-mono font-semibold text-muted-foreground">
-            IE GABO
-          </span>
+          <SchoolLogo
+            size="sm"
+            isAuthenticated
+            showText={false}
+            linkClassName="min-h-0 min-w-0"
+          />
         </div>
 
         {/* Card Principal */}

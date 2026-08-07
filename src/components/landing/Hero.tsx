@@ -14,6 +14,7 @@ import {
   Heart,
   Wrench,
 } from "lucide-react";
+import { SchoolLogo } from "@/src/components/common";
 import { Badge } from "@/src/components/ui/badge";
 import { buttonVariants } from "@/src/components/ui/button";
 import { cn } from "@/src/lib/utils";
@@ -119,13 +120,11 @@ export function Hero() {
 
             {/* Credencial institucional */}
             <div className="flex items-center gap-4 pt-4 border-t border-border/50 text-xs font-semibold text-muted-foreground flex-wrap">
-              <span className="flex items-center gap-1.5 text-foreground font-bold">
-                <ShieldCheck className="size-4 text-emerald-500" />
-                Institución educativa GABO (IE GABO)
-              </span>
-              <span className="text-border">•</span>
+              <SchoolLogo size="lg" linkClassName="min-h-0 min-w-0 px-0" />
+              <span className="text-border hidden sm:inline">•</span>
               <span className="flex items-center gap-1 text-primary">
-                Sincronización Realtime ⚡
+                <ShieldCheck className="size-4 text-emerald-500" />
+                Sincronización Realtime
               </span>
             </div>
 

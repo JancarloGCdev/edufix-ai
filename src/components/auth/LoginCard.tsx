@@ -1,4 +1,3 @@
-import { Wrench } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -17,14 +16,6 @@ export function LoginCard() {
       className="w-full rounded-2xl border-border/70 bg-card shadow-[0_1px_2px_oklch(0.2_0.02_255_/0.04),0_12px_32px_oklch(0.2_0.02_255_/0.06)]"
     >
       <CardHeader className="items-center gap-4 px-5 pb-2 pt-8 text-center sm:px-8">
-        {/* GSAP: animar logo al montar */}
-        <div
-          data-gsap="auth-logo"
-          className="flex size-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-sm shadow-primary/25"
-        >
-          <Wrench className="size-5" aria-hidden />
-        </div>
-
         <div className="space-y-2">
           <p className="text-sm font-medium text-primary">EduFix AI</p>
           <CardTitle className="text-2xl font-semibold tracking-tight">
